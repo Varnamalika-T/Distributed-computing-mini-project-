@@ -1,0 +1,57 @@
+import random 
+import time 
+
+# Define a class for a Smart Waste Bin 
+class SmartBin: 
+    def __init__(self, bin_id, location, capacity=100): 
+        self.bin_id = bin_id 
+        self.location = location 
+        self.capacity = capacity 
+        self.fill_level = 0  # starts empty 
+
+    def add_waste(self): 
+        # Randomly add waste to simulate use 
+        self.fill_level += random.randint(5, 25) 
+        if self.fill_level > self.capacity: 
+            self.fill_level = self.capacity 
+
+    def is_full(self): 
+        return self.fill_level >= self.capacity 
+
+    def empty_bin(self): 
+        print(f"🗑️  Emptying bin {self.bin_id} at {self.location}") 
+        self.fill_level = 0 
+
+# Create distributed bins across a city 
+bins = [ 
+    SmartBin(1, "Community Park"), 
+    SmartBin(2, "Downtown"), 
+    SmartBin(3, "Residential Area"), 
+    SmartBin(4, "School Zone"), 
+    SmartBin(5, "Market Area") 
+] 
+
+def check_bins(bins): 
+    print("\n--- Checking Bin Status ---") 
+    for bin in bins: 
+        bin.add_waste() 
+        print(f"Bin {bin.bin_id} ({bin.location}) → Fill Level: {bin.fill_level}%") 
+        if bin.is_full(): 
+            print(f"⚠️  Bin {bin.bin_id} is full! Scheduling for collection...") 
+            bin.empty_bin() 
+
+def generate_report(bins): 
+    print("\n--- Waste Collection Report ---") 
+    total_waste = sum(bin.fill_level for bin in bins) 
+    avg_fill = total_waste / len(bins) 
+    print(f"Total bins monitored: {len(bins)}") 
+    print(f"Average bin fill level: {avg_fill:.2f}%") 
+    print(f"Estimated waste volume today: {total_waste} units") 
+    print("This data supports SDG 11 by optimizing waste collection routes.") 
+
+# Simulate system operation 
+for i in range(3):  # simulate 3 time intervals 
+    print(f"\n⏱️  Simulation Cycle {i+1}") 
+    check_bins(bins) 
+    generate_report(bins) 
+    time.sleep(1)  # pause for readability
